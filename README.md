@@ -5,9 +5,18 @@ Problem: Predict structural parameters (Ag thickness, polymer thickness, period)
 
 Method: 
 
-1. Autoencoder for spectral compression
-2. Pretrained Forward model to be used later in inverse design 
-3. Conditional VAE and Tandem Network for inverse design
+1. Data Generation & Simulation: Reflection spectra generation using Rigorous Coupled Wave Analysis (RCWA) simulation across the visible range and a complete span of incident angles. Dataset includes wide parameter space of hybrid waveguide gratings and their corresponding reflection spectra.
+  
+2. Autoencoder for dimension reduction: An autoencoder model is trained to compress 2D reflection spectra into a lower-dimensional latent representation. The AE model captures the essential spectral features while it reduces complexity. It is also the main denoising component of the framework. It learns stable latent space from the noisy reflection spectra. The latent vectors are later used as inputs to subsequent models, ensure that subsequent models are resilient to the noise and fluctuations typical of real-world measurements.
+
+3. Forward model: A forward neural network learns the mapping from structural parameters to spectral latent representation (latent vectors from the AE model).
+   
+4. Inverse models: Tandem Network and conditional Variational Autoencoder (cVAE)
+
+  1.Tandem Network: It combines a pre-trained forward model with an inverse network. The inverse model predicts the structural parameters from the latent representation of the reflection spectra. The predicted structural parameters are then used as input to the pre-trained forward model to reconstruct the latent representation of the reflection spectra. During training, the inverse model is optimized by minimizing the error between the predicted and ground-truth latent representations.
+  
+  2. Conditional Variational Autoencoder (cVAE): It uses spectral latent representations as the condition to generate probable structural parameters.
+
 
 Results are provided in paper https://doi.org/10.3390/opt6040061
 
