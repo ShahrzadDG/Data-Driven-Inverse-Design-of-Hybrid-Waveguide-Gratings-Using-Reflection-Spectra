@@ -13,9 +13,9 @@ Method:
    
 4. Inverse models: Tandem Network and conditional Variational Autoencoder (cVAE)
 
-  1.Tandem Network: It combines a pre-trained forward model with an inverse network. The inverse model predicts the structural parameters from the latent representation of the reflection spectra. The predicted structural parameters are then used as input to the pre-trained forward model to reconstruct the latent representation of the reflection spectra. During training, the inverse model is optimized by minimizing the error between the predicted and ground-truth latent representations.
+      1. Tandem Network: It combines a pre-trained forward model with an inverse network. The inverse model predicts the structural parameters from the latent representation of the reflection spectra. The predicted structural parameters are then used as input to the pre-trained forward model to reconstruct the latent representation of the reflection spectra. During training, the inverse model is optimized by minimizing the error between the predicted and ground-truth latent representations.
   
-  2. Conditional Variational Autoencoder (cVAE): It uses spectral latent representations as the condition to generate probable structural parameters.
+      2. Conditional Variational Autoencoder (cVAE): It uses spectral latent representations as the condition to generate probable structural parameters.
 
 
 Results are provided in paper https://doi.org/10.3390/opt6040061
