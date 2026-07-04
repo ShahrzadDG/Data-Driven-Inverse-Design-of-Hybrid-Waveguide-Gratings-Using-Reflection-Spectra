@@ -18,14 +18,21 @@ import sys
 sys.path.append('/path to codes/')
 from Models import Autoencoder
 
-def load_model_and_reconstruct(input_tensor, model_path='/path to model/autoencoder_model_128_noise.pth', latent_dim=128, device='cpu'):
-    model = Autoencoder(latent_dim=latent_dim)
-    model.load_state_dict(torch.load(model_path, map_location=device, weights_only=True))
-    model.to(device)
-    model.eval()
+
+autoencoder_model_path = "path to the autoencoder model/autoencoder_model_128_noise.pth"
+ae_model = Autoencoder(latent_dim=128)
+ae_model.load_state_dict(torch.load(autoencoder_model_path, map_location=DEVICE, weights_only=True))
+ae_model.to(DEVICE)
+ae_model.eval()
+
+def load_model_and_reconstruct(ae_model, input_tensor, device='cpu'):
+    # model = Autoencoder(latent_dim=latent_dim)
+    # model.load_state_dict(torch.load(model_path, map_location=device, weights_only=True))
+    # model.to(device)
+    # model.eval()
     input_tensor = input_tensor.to(device)
     with torch.no_grad():
-        reconstructed, latent_vector = model(input_tensor)
+        reconstructed, latent_vector = ae_model(input_tensor)
     return reconstructed, latent_vector
         
 min_values = [10, 0, 280]  
@@ -63,7 +70,7 @@ class ReflStrDataLoader:
             reflection = reflection.iloc[1:, 1:].astype(float)
             reflection = reflection.values
             reflection_tensor = torch.tensor(reflection, dtype=torch.float32).unsqueeze(0).unsqueeze(0)  
-            reconstructed_output, latent_vector = load_model_and_reconstruct(reflection_tensor, device=device)
+            reconstructed_output, latent_vector = load_model_and_reconstruct(ae_model, reflection_tensor, device=device)
 
             Reflection_list.append(latent_vector.squeeze(0).cpu().numpy())
             
@@ -131,7 +138,7 @@ class TandemDataLoader:
             reflection = reflection.iloc[1:, 1:].astype(float)
             reflection = reflection.values
             reflection_tensor = torch.tensor(reflection, dtype=torch.float32).unsqueeze(0).unsqueeze(0)  
-            reconstructed_output, latent_vector = load_model_and_reconstruct(reflection_tensor, device=device)
+            reconstructed_output, latent_vector = load_model_and_reconstruct(ae_model, reflection_tensor, device=device)
             Reflection_list.append(latent_vector.squeeze(0).cpu().numpy())
             
             file_names.append(f"Reflection_TM_{i}.csv")
