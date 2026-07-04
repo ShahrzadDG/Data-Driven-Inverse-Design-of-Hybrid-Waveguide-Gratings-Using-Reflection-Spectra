@@ -47,7 +47,7 @@ def train_autoencoder(model, train_loader, test_loader, num_epochs=20, learning_
         model.eval()
         val_loss = 0.0
         with torch.no_grad():
-            for inputs, _ in test_loader:
+            for inputs, _ in val_loader:
                 inputs = inputs.to(device)
                 outputs, _ = model(inputs)
                 loss = criterion(outputs, inputs)
